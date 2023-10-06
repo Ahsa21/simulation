@@ -1,7 +1,7 @@
 from collections import deque as de
 import random as rd
 
-class barack:
+class Barack:
     def __init__(self):
         self.workers = de([])
 
@@ -17,7 +17,7 @@ class barack:
 
 
 
-class worker: # this class contains information about the worker
+class Worker: # this class contains information about the worker
     def __init__(self):
         self.vitality = 100
 
@@ -36,7 +36,7 @@ class worker: # this class contains information about the worker
 
 
 
-class dining_room: # here eats the workers
+class Dining_room: # here eats the workers
     def __init__(self, from_barack, to_barack, from_warehouse):
         self._from_barack = from_barack #from which barack the worker will be recieved from
         self._from_warehouse = from_warehouse #from which warehouse the food should be brought from
@@ -64,7 +64,7 @@ class dining_room: # here eats the workers
         pass
 
 
-class food:
+class Food:
     def __init__(self):
         self.quality = None
 
@@ -75,7 +75,7 @@ class food:
         return self.quality
 
 
-class warehouse:
+class Warehouse:
     def __init__(self):
         self.food = de([])
 
@@ -89,3 +89,77 @@ class warehouse:
         return len(self.food)
 
 
+
+class Field: # a place where workers work to make some food
+    def __init__(self, from_barack, to_barack, to_warehouse):
+        self._from_barack = from_barack #from which barack the worker will be recieved from
+        self._to_warehouse = to_warehouse #to which warehouse the food should be sent to
+        self._to_barack = to_barack # to which barack should the worker be sent to?
+
+    def set_to_barack(self, barack):
+        self._to_warehouse = barack
+
+    def set_to_warehouse(self, warehouse):
+        self._to_warehouse = warehouse
+
+    def set_from_barack(self, barack):
+        self._from_barack = barack
+
+    def _check_worker(self): #check if there are workers in barack
+        return self._from_barack.workers_count() >= 1
+
+    def _check_address(self):
+        value = None
+        if (self._from_barack and self._to_warehouse and self._to_barack) != None:
+            value = True
+
+        else:
+            value = False
+
+        return value
+
+    def produce(self): # here starts the production of the food
+        pass
+
+
+class Home: # a place where workers get some rest or even marry
+    def __init__(self, from_barack, to_barack, from_inventory):
+        self._from_barack = from_barack #from which barack the worker will be recieved from
+        self._to_barack = to_barack # to which barack should the worker be sent to?
+        self._from_inventory = from_inventory #from which inventory we will take/ recieve a product
+        self._house_type = None
+
+    def set_to_barack(self, barack):
+        self._to_barack = barack
+
+    def set_from_barack(self, barack):
+        self._from_barack = barack
+
+    def set_from_inventory(self, inventory):
+        self._from_inventory = inventory
+
+    def set_house_type(self): # determine if this house is for marrage or for usual sleeping
+        self._house_type = rd.choice(['sleep', 'marry'])
+
+    def check_produkt(self):
+        return self._from_inventory.get_count() >= 1
+
+    def _check_worker(self,house_type):
+        if house_type =='sleep':
+            return self._from_barack.workers_count() >= 1 # if it is for sleeping so only one worker is needed in the home/room 
+        
+        else:
+            return self._from_barack.workers_count() >= 2 # if it is for marrage it needs two workers to get married home
+
+    def _check_adress(self): #checks if all addresses exist
+        value = None
+        if (self._from_barack and self._from_inventory and self._to_barack) != None:
+            value = True
+
+        else:
+            value = False
+
+        return value
+    
+    def start_home(self):
+        pass 
