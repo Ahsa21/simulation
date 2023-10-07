@@ -214,3 +214,47 @@ class product:
        pass
    
 
+
+class simulation: # here starts the simulation
+    def __init__(self):
+            self._home = []
+            self._factory = []
+            self._field = []
+            self._dining_room = []
+            self._barack = []
+            self._warehouse = []
+            self._inventory = []
+            self.simulation = False
+
+    def simulation_is_over(self): # checks if there are at least one worker for the simulation to work
+        pass
+
+    def add_factory(self, factory):
+        self._factory.append(factory)
+
+    def add_home(self, home):
+        self._home.append(home)
+
+    def add_field(self, field):
+        self._field.append(field)
+
+    def add__dining_room(self, dining_room):
+        self._dining_room.append(dining_room)
+
+    def add_barack(self, barack):
+        self._barack.append(barack)
+    
+    def add_warehouse(self, warehouse):
+        self._warehouse.append(warehouse)
+
+    def add_inventory(self, inventory):
+        self._inventory.append(inventory)
+
+    def run_world(self):
+        self.simulation = True
+
+    def add_worker(self, numb_workers):
+        pass
+
+    def create_world(self):
+        pass
