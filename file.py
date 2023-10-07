@@ -166,7 +166,7 @@ class Home: # a place where workers get some rest or even marry
 
 
 
-class inventory:
+class Inventory:
     def __init__(self):
         self._products = []
 
@@ -181,7 +181,7 @@ class inventory:
 
 
 
-class factory:
+class Factory:
     def __init__(self, from_barack, to_barack, to_inventory):
         self._from_barack = from_barack #from which barack the worker will be recieved from.
         self._to_barack = to_barack # to which barack should the worker be sent to?.
@@ -209,13 +209,13 @@ class factory:
 
 
 
-class product:
+class Product:
    def __init__(self):
        pass
    
 
 
-class simulation: # here starts the simulation
+class Simulation: # here starts the simulation
     def __init__(self):
             self._home = []
             self._factory = []
