@@ -163,3 +163,54 @@ class Home: # a place where workers get some rest or even marry
     
     def start_home(self):
         pass 
+
+
+
+class inventory:
+    def __init__(self):
+        self._products = []
+
+    def get_count(self):
+        return len(self._products)
+    
+    def recieve_product(self, product):
+        self._products.append(product)
+        
+    def send_product(self):
+        return self._products.pop()
+
+
+
+class factory:
+    def __init__(self, from_barack, to_barack, to_inventory):
+        self._from_barack = from_barack #from which barack the worker will be recieved from.
+        self._to_barack = to_barack # to which barack should the worker be sent to?.
+        self._to_inventory = to_inventory # to which inventory we should send the product.
+    
+
+    def set_to_barack(self, barack):
+        self._to_barack = barack
+
+    def set_from_barack(self, barack):
+        self._from_barack = barack
+
+    def set__to_inventory(self, inventory):
+        self._to_inventory= inventory
+
+    def _check_worker(self):
+        if not self._from_barack.workers_count() >= 1 and self._to_barack.workers_count() >= 1:
+            pass
+
+    def _check_address(self):
+        return (self._from_barack and self._to_barack and self._to_inventory) != None
+
+    def create_product(self):
+        pass
+
+
+
+class product:
+   def __init__(self):
+       pass
+   
+
