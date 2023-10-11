@@ -22,15 +22,25 @@ class Worker: # this class contains information about the worker
         self.vitality = 100
 
     def increase(self, numb): # here increase the vitality of the worker
-        pass
+        if numb + self.vitality >= 100: # this makes sure that the vitality does not increase more than 100
+            self.vitality = 100
+        else:
+            self.vitality += numb
 
     def shrink(self, float): # this method shrink the vitality of a worker
-        pass
+        if self.vitality - float >0:
+            self.vitality -= float
+        else:
+            self.vitality = 0
 
 
     def check_die(self, point): # checks if the worker has vitality == 0
-        pass
-
+        life = False
+        if point == 0:
+            life = True
+        else:
+            life = False
+        return life
     def get_livskraft(self):
         return self.vitality
 
@@ -61,7 +71,26 @@ class Dining_room: # here eats the workers
         return (self._from_barack and self._from_warehouse and self._to_barack) != None
     
     def start_eating(self):
-        pass
+        if not (self._check_address() and self._check_worker() and self.check_food()):
+            print('something does not exisit in dining_room, either addresses, workers or food')
+
+        else:
+
+            quality = self._from_warehouse.send_mat().get_quality() # gives the quality of the food
+            worker = self._from_barack.send_worker() # bring the worker
+
+            if  quality > 0: # if the quality is positive
+                worker.increase(quality)
+                self._to_barack.add_worker(worker)
+                print("someone is got stronger by the food")
+
+            else: #if the quality is negative
+                worker.shrink(-quality)
+                if worker.check_die(worker.get_livskraft()):
+                    print("a worker died")
+                else:
+                    self._to_barack.add_worker(worker)
+                    print("someone is sick by the food")
 
 
 class Food:
