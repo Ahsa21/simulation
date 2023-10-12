@@ -148,7 +148,21 @@ class Field: # a place where workers work to make some food
         return value
 
     def produce(self): # here starts the production of the food
-        pass
+        if not (self._check_address() and self._check_worker()):
+            print('something does not exist in the field, workers or adderesses')
+            
+        else:
+
+            worker = self._from_barack.send_worker()
+            accident = rd.choice([True, False, False, False, False]) # an accident may occur
+
+            if not accident:
+                self._to_barack.add_worker(worker)
+                self._to_warehouse.recieve_mat(Food())
+                print("a worker produced food from the field")
+                
+            else:
+                print('worker accident in the field')
 
 
 class Home: # a place where workers get some rest or even marry
@@ -191,7 +205,28 @@ class Home: # a place where workers get some rest or even marry
         return value
     
     def start_home(self):
-        pass 
+        self.set_house_type() # give a random choice for workers, either to marry of to get some rest
+        house_type = self._house_type
+
+        if not (self._check_worker(house_type) and self.check_produkt() and self._check_adress()):
+            print('something does not exist in home, either workers, products or addresses')
+
+        else:
+            self._from_inventory.send_product() # remove a product from the inventory
+
+            if house_type == 'sleep':
+                worker3 = self._from_barack.send_worker()
+                worker3.increase(rd.randrange(25))
+                self._to_barack.add_worker(worker3)
+                print("someone has slept")
+
+            elif house_type == 'marry':
+                worker1 = self._from_barack.send_worker()
+                worker2 = self._from_barack.send_worker()
+                self._to_barack.add_worker(worker1)
+                self._to_barack.add_worker(worker2)
+                self._to_barack.add_worker(Worker())
+                print("a couple got married")
 
 
 
