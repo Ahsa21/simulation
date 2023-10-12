@@ -269,7 +269,26 @@ class Factory:
         return (self._from_barack and self._to_barack and self._to_inventory) != None
 
     def create_product(self):
-        pass
+        if not (self._check_address() and self._check_worker()):
+            print('something does not exist in factory, either addresses or workers')
+
+        else:
+
+            worker1 =self._from_barack.send_worker() # bring a worker 
+            accident = rd.choice([True, False,False,True,False]) # a chance that an accident occur
+
+            if accident:
+                worker1.shrink(100) # the worker dies
+            else:
+                worker1.shrink(rd.randrange(25)) # shrink the vitality of the worker 
+                if worker1.check_die(worker1.get_livskraft()):
+                    print("a worker has died")
+
+                else:
+                    self._to_inventory.recieve_product(Product())
+                    self._to_barack.add_worker(worker1)
+                    print("a worker has made a product")
+
 
 
 
@@ -291,7 +310,15 @@ class Simulation: # here starts the simulation
             self.simulation = False
 
     def simulation_is_over(self): # checks if there are at least one worker for the simulation to work
-        pass
+        start = True
+        for x in self._barack:
+            if x.workers_count() == 0:
+                start = False
+            else:
+                return True
+        if start:
+            self.simulation = True
+            return self.simulation
 
     def add_factory(self, factory):
         self._factory.append(factory)
@@ -318,7 +345,9 @@ class Simulation: # here starts the simulation
         self.simulation = True
 
     def add_worker(self, numb_workers):
-        pass
+        for worker1 in self._barack:
+            for worker2 in range(numb_workers):
+                worker1.add_worker(Worker())
 
     def create_world(self):
         pass
