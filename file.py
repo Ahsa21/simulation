@@ -52,6 +52,9 @@ class Dining_room: # here eats the workers
         self._from_warehouse = from_warehouse #from which warehouse the food should be brought from
         self._to_barack = to_barack # to which barack should the worker be send to?
 
+    def get_warehouse(self): # returns how much food we have
+        return self._from_warehouse.get_count()
+
     def set_to_barack(self, to_barack):
         self._to_barack = to_barack
 
@@ -76,7 +79,7 @@ class Dining_room: # here eats the workers
 
         else:
 
-            quality = self._from_warehouse.send_mat().get_quality() # gives the quality of the food
+            quality = self._from_warehouse.send_food().get_quality() # gives the quality of the food
             worker = self._from_barack.send_worker() # bring the worker
 
             if  quality > 0: # if the quality is positive
@@ -96,6 +99,7 @@ class Dining_room: # here eats the workers
 class Food:
     def __init__(self):
         self.quality = None
+        self.random_quality()
 
     def random_quality(self): # gives a random quality 
         self.quality = rd.randrange(-40, 50)
@@ -158,7 +162,7 @@ class Field: # a place where workers work to make some food
 
             if not accident:
                 self._to_barack.add_worker(worker)
-                self._to_warehouse.recieve_mat(Food())
+                self._to_warehouse.recieve_food(Food())
                 print("a worker produced food from the field")
                 
             else:
@@ -171,6 +175,9 @@ class Home: # a place where workers get some rest or even marry
         self._to_barack = to_barack # to which barack should the worker be sent to?
         self._from_inventory = from_inventory #from which inventory we will take/ recieve a product
         self._house_type = None
+
+    def get_inventory(self):
+        return self._from_inventory.get_count()
 
     def set_to_barack(self, barack):
         self._to_barack = barack
@@ -350,4 +357,50 @@ class Simulation: # here starts the simulation
                 worker1.add_worker(Worker())
 
     def create_world(self):
-        pass
+        while self.simulation:
+            if self.simulation:
+                for x in self._factory:
+                    x.create_product() # start the production
+                    self.simulation_is_over() # checks if there are at least one worker to work
+
+            if self._home[0].get_inventory() != 0 and self.simulation:
+                for x in self._home:
+                    x.start_home() # make sure that either a worker get some rest or get married
+                    self.simulation_is_over()
+
+            if self.simulation:
+                for x in self._field:
+                    x.produce() # plant the field and make some food for the workers
+                    self.simulation_is_over()
+
+            if self._dining_room[0].get_warehouse() !=0 and self.simulation:
+                for x in self._dining_room:
+                    x.start_eating() # a place where workers eat
+                    self.simulation_is_over()
+        print("simulation is over")
+
+
+
+x = Simulation()
+barack1 = Barack()
+barack2 = Barack()
+inventory1 = Inventory()
+warehouse1 = Warehouse()
+
+x.add_barack(barack1)
+x.add_barack(barack2)
+x.add_factory(Factory(barack1, barack2, inventory1))
+x.add_home(Home(barack2, barack1, inventory1))
+x.add_field(Field(barack1, barack2, warehouse1))
+x.add__dining_room(Dining_room(barack2, barack1, warehouse1))
+x.add_worker(5)
+x.run_world()
+x.create_world()
+
+
+
+# the method recieve_mat have been renamed to recieve_food in the Warehouse class
+# the recieve_mat in the Dining_room changed to recieve_food
+# added code to create_world method in the Simulation class
+# get_warehouse method added to the Dining_room
+# get_inventory method added to the Home
