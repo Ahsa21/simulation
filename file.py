@@ -270,8 +270,11 @@ class Factory:
 
     def _check_worker(self):
         if not self._from_barack.workers_count() >= 1 and self._to_barack.workers_count() >= 1:
-            pass
+            new_address = self._from_barack
+            self._from_barack = self._to_barack
+            self._to_barack = new_address
 
+        return self._from_barack.workers_count() >= 1
     def _check_address(self):
         return (self._from_barack and self._to_barack and self._to_inventory) != None
 
@@ -326,6 +329,8 @@ class Simulation: # here starts the simulation
         if start:
             self.simulation = True
             return self.simulation
+        
+        self.simulation = False
 
     def add_factory(self, factory):
         self._factory.append(factory)
@@ -399,8 +404,3 @@ x.create_world()
 
 
 
-# the method recieve_mat have been renamed to recieve_food in the Warehouse class
-# the recieve_mat in the Dining_room changed to recieve_food
-# added code to create_world method in the Simulation class
-# get_warehouse method added to the Dining_room
-# get_inventory method added to the Home
