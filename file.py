@@ -44,7 +44,7 @@ class Worker: # this class contains information about the worker
     def get_livskraft(self):
         return self.vitality
 
-
+    
 
 class Dining_room: # here eats the workers
     def __init__(self, from_barack, to_barack, from_warehouse):
@@ -195,6 +195,17 @@ class Home: # a place where workers get some rest or even marry
         return self._from_inventory.get_count() >= 1
 
     def _check_worker(self,house_type):
+        
+        if not self._from_barack.get_count() >= 1 and self._to_barack.get_count() >= 1 and house_type =='sleep':
+            new_address = self._from_barack
+            self._from_barack = self._to_barack
+            self._to_barack = new_address
+
+        elif not self._from_barack.get_count() >= 2 and self._to_barack.get_count() >= 2 and house_type =='marry':
+            new_address = self._from_barack
+            self._from_barack = self._to_barack
+            self._to_barack = new_address
+
         if house_type =='sleep':
             return self._from_barack.workers_count() >= 1 # if it is for sleeping so only one worker is needed in the home/room 
         
