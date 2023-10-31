@@ -1,5 +1,6 @@
 from collections import deque as de
 import random as rd
+import sqlite3
 
 
 
@@ -389,13 +390,26 @@ class Factory(Information):
 class SimSimsAnalytics:
     '''#"analyses"'''
     def __init__(self, file):
-        pass
+        self._conn = self._create_connection(file)
+        self._sim_id = None
+
+        c = self._conn.cursor()
+        c.execute("INSERT INTO simulations(date) VALUES (datetime('now'))")
+        self._conn.commit()
+        c.execute ("SELECT last_insert_rowid();")
+        self._sim_id = c.fetchall()[0][0]
 
     def show_result(self): # here we can see the data of the database
-        pass
+        c = self._conn.cursor()
+        c.execute("SELECT * FROM iterations")
+        rows = c.fetchall()
+        for row in rows:
+            print(row)
 
     def add_step(self,step, Workers, Products, Food): # adds the data to the data base
-        pass
+        c = self._conn.cursor()
+        c.execute(f"INSERT INTO iterations VALUES ({self._sim_id}, {step}, {Workers}, {Products}, {Food})")
+        self._conn.commit()
 
     def to_excel(self, filename): # move to excel
         pass
@@ -404,8 +418,15 @@ class SimSimsAnalytics:
         pass
 
     def _create_connection(self, db_file): # connect to the database
-        pass
-    
+        conn = None
+        try:
+            conn = sqlite3.connect(db_file)
+            return conn
+        except sqlite3.Error as e:
+            print(e)
+
+        return conn
+
 class Simulation:
     '''# here starts the simulation'''
     def __init__(self):
