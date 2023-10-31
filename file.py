@@ -5,14 +5,10 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 from matplotlib import pyplot
 
-
-
 class Places:
-
     '''
     a super class to the following classes Barack, Warehouse and Inventory
     '''
-
     def __init__(self):
         '''constructor'''
         self._objects = de([])
@@ -440,8 +436,6 @@ class SimSimsAnalytics:
         c.execute(f"select step, num_Workers, num_Products, num_Food from iterations where sim_id={self._sim_id} order by step")
         data = c.fetchall()
 
-
-
         c.execute(f"select date from simulations where sim_id={self._sim_id}")
 
         arr_step = [row[0] for row in data ]
@@ -582,10 +576,6 @@ class Simulation:
 
         self.Analytics.to_excel("file.xlsx")
         self.Analytics.to_figure("diagram") # call the 'diagram'
-    
-
-
-
 
         print("simulation is over")
 
