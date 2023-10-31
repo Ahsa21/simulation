@@ -482,7 +482,7 @@ class SimSimsAnalytics:
 
 class Simulation:
     '''# here starts the simulation'''
-    def __init__(self):
+    def __init__(self, Analytics):
             self._home = []
             self._factory = []
             self._field = []
@@ -491,6 +491,7 @@ class Simulation:
             self._warehouse = []
             self._inventory = []
             self.simulation = False
+            self.Analytics = Analytics
 
     def simulation_is_over(self): # checks if there are at least one worker for the simulation to work
         start = True
@@ -535,45 +536,75 @@ class Simulation:
                 worker1.add_object(Worker())
 
     def create_world(self):
+        step = 0
         while self.simulation:
+            workers_numb = 0
+            food_numb = 0
+            product_numb = 0
+            
             if self.simulation:
                 for x in self._factory:
                     x.start() # start the production
+                    x.start()
+                    x.start()
                     self.simulation_is_over() # checks if there are at least one worker to work
 
             if self._home[0].get_inventory() != 0 and self.simulation:
                 for x in self._home:
                     x.start() # make sure that either a worker get some rest or get married
+                    x.start()
                     self.simulation_is_over()
 
             if self.simulation:
                 for x in self._field:
                     x.start() # plant the field and make some food for the workers
+                    x.start()
                     self.simulation_is_over()
 
             if self._dining_room[0].get_warehouse() !=0 and self.simulation:
                 for x in self._dining_room:
                     x.start() # a place where workers eat
                     self.simulation_is_over()
+
+
+            for x in self._barack: # count the number of the Workers
+                workers_numb += x.get_count()
+
+            for x in self._warehouse: # count the number of Food
+                food_numb += x.get_count()
+
+            for x in self._inventory: # count the number of pridcts
+                product_numb += x.get_count()
+
+            step += 1
+
+            self.Analytics.add_step(step, workers_numb, product_numb, food_numb)# draw a diagram
+
+        self.Analytics.to_excel("file.xlsx")
+        self.Analytics.to_figure("diagram") # call the 'diagram'
+    
+
+
+
+
         print("simulation is over")
 
 
 
-x = Simulation()
-barack1 = Barack()
-barack2 = Barack()
-inventory1 = Inventory()
-warehouse1 = Warehouse()
-
-x.add_barack(barack1)
-x.add_barack(barack2)
-x.add_factory(Factory(barack1, barack2, inventory1))
-x.add_home(Home(barack2, barack1, inventory1))
-x.add_field(Field(barack1, barack2, warehouse1))
-x.add__dining_room(Dining_room(barack2, barack1, warehouse1))
-x.add_worker(5)
+x = Simulation(SimSimsAnalytics("file2.db"))
+Barack1 = Barack()
+Barack2 = Barack()
+Inventory1 = Inventory()
+Warehouse1 = Warehouse()
+x.add_warehouse(Warehouse1)
+x.add_inventory(Inventory1)
+x.add_barack(Barack1)
+x.add_barack(Barack2)
+x.add_factory(Factory(Barack1, Barack2, Inventory1))
+x.add_home(Home(Barack2, Barack1, Inventory1))
+x.add_field(Field(Barack1, Barack2, Warehouse1))
+x.add__dining_room(Dining_room(Barack2, Barack1, Warehouse1))
+x.add_worker(20)
 x.run_world()
 x.create_world()
-
-
 
