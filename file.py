@@ -195,13 +195,13 @@ class Home: # a place where workers get some rest or even marry
         return self._from_inventory.get_count() >= 1
 
     def _check_worker(self,house_type):
-        
-        if not self._from_barack.get_count() >= 1 and self._to_barack.get_count() >= 1 and house_type =='sleep':
+
+        if not self._from_barack.workers_count() >= 1 and self._to_barack.workers_count() >= 1 and house_type =='sleep':
             new_address = self._from_barack
             self._from_barack = self._to_barack
             self._to_barack = new_address
 
-        elif not self._from_barack.get_count() >= 2 and self._to_barack.get_count() >= 2 and house_type =='marry':
+        elif not self._from_barack.workers_count() >= 2 and self._to_barack.workers_count() >= 2 and house_type =='marry':
             new_address = self._from_barack
             self._from_barack = self._to_barack
             self._to_barack = new_address
