@@ -385,9 +385,27 @@ class Factory(Information):
                     self._to_inventory.add_object(Product())
                     self._to_barack.add_object(worker1)
                     print("a worker has made a product")
-   
 
+class SimSimsAnalytics:
+    '''#"analyses"'''
+    def __init__(self, file):
+        pass
 
+    def show_result(self): # here we can see the data of the database
+        pass
+
+    def add_step(self,step, Workers, Products, Food): # adds the data to the data base
+        pass
+
+    def to_excel(self, filename): # move to excel
+        pass
+
+    def to_figure(self, filename): # here we can draw the diagram
+        pass
+
+    def _create_connection(self, db_file): # connect to the database
+        pass
+    
 class Simulation:
     '''# here starts the simulation'''
     def __init__(self):
