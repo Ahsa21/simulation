@@ -1,6 +1,9 @@
 from collections import deque as de
 import random as rd
 import sqlite3
+from openpyxl import Workbook
+from openpyxl import load_workbook
+from matplotlib import pyplot
 
 
 
@@ -412,10 +415,60 @@ class SimSimsAnalytics:
         self._conn.commit()
 
     def to_excel(self, filename): # move to excel
-        pass
+        c = self._conn.cursor()
+        c.execute(f"select step, num_Workers, num_Products, num_Food from iterations where sim_id={self._sim_id} order by step")
+        data = c.fetchall()
+
+        c.execute(f"select date from simulations where sim_id={self._sim_id}")
+        date = c.fetchall()[0][0] #Första värdet i första tupeln
+
+
+        try:
+            wb = load_workbook(filename)
+        except:
+            wb = Workbook()
+            # Skapar blad med datum och tid som namn på bladet
+        ws = wb.create_sheet(date.replace(":","."))
+
+        for row in data:
+            ws.append(row)
+        # Sparar till samma filnamn
+        wb.save(filename)
 
     def to_figure(self, filename): # here we can draw the diagram
-        pass
+        c = self._conn.cursor()
+        c.execute(f"select step, num_Workers, num_Products, num_Food from iterations where sim_id={self._sim_id} order by step")
+        data = c.fetchall()
+
+
+
+        c.execute(f"select date from simulations where sim_id={self._sim_id}")
+
+        arr_step = [row[0] for row in data ]
+        arr_workers = [row[1] for row in data ]
+        arr_products = [row[2] for row in data ]
+        arr_food = [row[3] for row in data ]
+
+        fig, ax = pyplot.subplots()
+        ax.plot(arr_step, arr_workers, label='Workers')
+        ax.plot(arr_step, arr_products, label='Products')
+        ax.plot(arr_step, arr_food, label='Food')
+        ax.set_xticks(arr_step)
+
+        # Add some text for labels, title and custom x-axis tick labels, etc.
+        ax.set_title('Resource in the simulation')
+        ax.set_ylabel('Number')
+        ax.set_xlabel('Iteration')
+        ax.legend()
+
+        fig.tight_layout()
+
+        # Show the figure
+        pyplot.show()
+
+        # Or export to file
+        fig.savefig(filename)
+        pyplot.close(fig)
 
     def _create_connection(self, db_file): # connect to the database
         conn = None
