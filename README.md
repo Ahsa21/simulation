@@ -29,5 +29,25 @@ Different types of Resources have different types of places and are manipulated 
 This addition emphasizes the simulation's representation as a self-contained miniaturized world with its unique set of resources, places, and interactions.
 
 
+## Dependencies
 
+The libraries used in this project include:
+- `deque` from `collections`
+- `random`
+- `sqlite3`
+- `Workbook` and `load_workbook` from `openpyxl`
+- `pyplot` from `matplotlib`
 
+## Data Storage and Analysis
+
+The project utilizes a database file to store resource data and generates an Excel file. The database and Excel files allow users to view, analyze, and visualize resource data via diagrams representing three different resource lines.
+
+## Usage
+
+To use the program:
+1. Run `create_db.py` to generate the database file.
+2. Execute `file.py` to run the simulation.
+
+## Contribution and License
+
+This project is open for everyone to use and contribute to.
